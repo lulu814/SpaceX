@@ -107,7 +107,7 @@ class SatSettingForm extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 // console.log('Received values of form: ', values);
-                // set setting to main
+                // send setting data to main
                 this.props.onShow(values);
             }
         });

@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Row, Col} from 'antd';
+import React, { Component } from "react";
 import axios from "axios";
+import { Row, Col } from "antd";
 import SatSetting from "./SatSetting";
 import SatelliteList from "./SatelliteList";
-import {NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY} from "../constants";
+import WorldMap from "./WorldMap";
+import { NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY } from "../constants";
 
 class Main extends Component {
     state = {
@@ -19,7 +20,7 @@ class Main extends Component {
     };
 
     fetchSatellite = setting => {
-        const {latitude, longitude, elevation, altitude} = setting;
+        const { latitude, longitude, elevation, altitude } = setting;
         const url = `/api/${NEARBY_SATELLITE}/${latitude}/${longitude}/${elevation}/${altitude}/${STARLINK_CATEGORY}/&apiKey=${SAT_API_KEY}`;
 
         this.setState({
@@ -29,7 +30,7 @@ class Main extends Component {
         axios
             .get(url)
             .then(response => {
-                console.log(response.data);
+                console.log('response data',response.data);
                 this.setState({
                     satInfo: response.data,
                     isLoadingList: false
@@ -37,22 +38,32 @@ class Main extends Component {
             })
             .catch(error => {
                 console.log("err in fetch satellite -> ", error);
-                this.setState({
-                    isLoading: false
-                })
             });
     };
 
+    showMap = selected => {
+        this.setState(preState => ({
+            ...preState,
+            isLoadingMap: true,
+            satList: [...selected]
+        }));
+    };
+
     render() {
-        const {satInfo} = this.state;
+        const { satInfo } = this.state;
         return (
             <Row className="main">
                 <Col span={8} className="left-side">
-                    <SatSetting onShow={this.showNearbySatellite} isLoad={this.state.isLoadingList}/>
-                    <SatelliteList staInfo={satInfo}/>
+                    <SatSetting onShow={this.showNearbySatellite} />
+                    <SatelliteList
+                        satInfo={satInfo}
+                        isLoad={this.state.isLoadingList}
+                        onShowMap={this.showMap}
+                    />
                 </Col>
-
-                <Col span={16} className="right-side"> right </Col>
+                <Col span={16} className="right-side">
+                    <WorldMap />
+                </Col>
             </Row>
         );
     }

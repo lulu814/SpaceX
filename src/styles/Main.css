@@ -5,8 +5,9 @@
 
 .right-side {
     height: 760px;
+    overflow-x: scroll;
 }
 
-.left-side {
-    margin: 20px;
-}
+/*.left-side {*/
+/*    margin: 20px;*/
+/*}*/
