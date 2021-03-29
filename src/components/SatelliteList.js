@@ -50,20 +50,24 @@ class SatelliteList extends Component {
 
     render() {
         const satList = this.props.satInfo ? this.props.satInfo.above : [];
-        const {isLoading} = this.props;
-        const {selected} = this.state;
+        const { isLoad } = this.props;
+        const { selected } = this.state;
         return (
             <div className="sat-list-box">
                 <div className="btn-container">
-                    <Button className="sat-list-btn" type="primary" size="large"
-                            disabled={selected.length === 0}
-                            onClick={this.onShowSatMap}>
+                    <Button
+                        className="sat-list-btn"
+                        type="primary"
+                        size="large"
+                        disabled={selected.length === 0}
+                        onClick={this.onShowSatMap}
+                    >
                         Track on the map
                     </Button>
                 </div>
                 <hr/>
                 {
-                    isLoading ? <div className="spin-box">
+                    isLoad ? <div className="spin-box">
                         <Spin tip="Loading..." size="large"/>
                     </div> : <List className="sat-list"
                                    itemLayout='horizontal'

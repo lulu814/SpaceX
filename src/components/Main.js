@@ -7,10 +7,13 @@ import WorldMap from "./WorldMap";
 import { NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY } from "../constants";
 
 class Main extends Component {
-    state = {
-        satInfo: null,
-        settings: null,
-        isLoadingList: false
+    constructor() {
+        super();
+        this.state = {
+            satInfo: null,
+            settings: null,
+            isLoadingList: false
+        };
     }
     showNearbySatellite = setting => {
         this.setState({
@@ -30,7 +33,7 @@ class Main extends Component {
         axios
             .get(url)
             .then(response => {
-                console.log('response data',response.data);
+                console.log(response.data);
                 this.setState({
                     satInfo: response.data,
                     isLoadingList: false
