@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { Row, Col } from "antd";
+import {Row, Col} from "antd";
 import SatSetting from "./SatSetting";
 import SatelliteList from "./SatelliteList";
 import WorldMap from "./WorldMap";
-import { NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY } from "../constants";
+import {NEARBY_SATELLITE, SAT_API_KEY, STARLINK_CATEGORY} from "../constants";
+// 70, -40, 90, 90, 2
 
 class Main extends Component {
     constructor() {
@@ -12,9 +13,11 @@ class Main extends Component {
         this.state = {
             satInfo: null,
             settings: null,
-            isLoadingList: false
+            isLoadingList: false,
+            satList: []
         };
     }
+
     showNearbySatellite = setting => {
         this.setState({
             settings: setting
@@ -23,7 +26,7 @@ class Main extends Component {
     };
 
     fetchSatellite = setting => {
-        const { latitude, longitude, elevation, altitude } = setting;
+        const {latitude, longitude, elevation, altitude} = setting;
         const url = `/api/${NEARBY_SATELLITE}/${latitude}/${longitude}/${elevation}/${altitude}/${STARLINK_CATEGORY}/&apiKey=${SAT_API_KEY}`;
 
         this.setState({
@@ -47,25 +50,24 @@ class Main extends Component {
     showMap = selected => {
         this.setState(preState => ({
             ...preState,
-            isLoadingMap: true,
             satList: [...selected]
         }));
     };
 
     render() {
-        const { satInfo } = this.state;
+        const {satInfo, settings, isLoadingList, satList} = this.state;
         return (
             <Row className="main">
                 <Col span={8} className="left-side">
-                    <SatSetting onShow={this.showNearbySatellite} />
+                    <SatSetting onShow={this.showNearbySatellite}/>
                     <SatelliteList
                         satInfo={satInfo}
-                        isLoad={this.state.isLoadingList}
+                        isLoad={isLoadingList}
                         onShowMap={this.showMap}
                     />
                 </Col>
                 <Col span={16} className="right-side">
-                    <WorldMap />
+                    <WorldMap satData={satList} observerData={settings} />
                 </Col>
             </Row>
         );
